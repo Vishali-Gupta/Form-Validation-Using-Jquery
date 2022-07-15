@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Task 1
+    </title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center text-warning">Form validation</h1>
+
+        <div class="col-lg-8  m-auto d-block">
+            <form>
+                <div class="form-group">
+                    <label for="user"> Username :</label>
+                    <input type="text" name="username" id="username" class="form-control" autocomplete="off"
+                        placeholder="Enter username">
+                    <span id="usercheck"> </span>
+                </div>
+                <div class="form-group">
+                    <label for="user"> Contact No :</label>
+                    <input type="text" name="username" id="contactNo" class="form-control"
+                        placeholder="Enter contact number">
+                    <span id="contactcheck"></span>
+
+                </div>
+                <div class="form-group">
+                    <label for="user"> Email :</label>
+                    <input type="email" name="username" id="email" class="form-control" placeholder="enter email"
+                        autocomplete="off" name="">
+                    <!-- <h5 id="emailcheck"> **Enter valid email adderss</h5>
+             -->
+                    <span id="emailcheck"></span>
+                </div>
+                <div class="form-group">
+                    <label for="user"> Password :</label>
+                    <input type="password" name="username" id="password" class="form-control"
+                        placeholder="Enter Password">
+                    <span id="passwordcheck"></span>
+                    <div>
+                        <input type="checkbox" id="show_password"> <small>SHOW PASSWORD</small>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="user"> Confirm Password :</label>
+                    <input type="password" name="username" id="conPassword" class="form-control"
+                        placeholder="Confirm your password">
+                    <span id="conpasswordcheck"> </span>
+                </div>
+                <input type="button" id="submitbtn" value="submit" class="btn btn-primary">
+            </form>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#username').keyup(function () {
+                // alert();
+                if (user_check() == true) {
+                    $("#username").css("border", "2px solid green");
+                    $("#usercheck").html("<p class='text-success'>Valid</p>")
+                }
+                else {
+                    $("#username").css("border", "2px solid red");
+                    $("#usercheck").html("<p class='text-danger'>Not Valid</p>")
+                }
+            });
+
+
+            $('#contactNo').keyup(function () {
+                // alert();
+                if (contact_check() == true) {
+                    $("#contactNo").css("border", "2px solid green");
+                    $("#contactcheck").html("<p class='text-success'>Valid</p>")
+                }
+                else {
+                    $("#contactNo").css("border", "2px solid red");
+                    $("#contactcheck").html("<p class='text-danger'>Not Valid</p>")
+                }
+            });
+            $('#email').keyup(function () {
+                // alert();
+                if (email_check() == true) {
+                    $("#email").css("border", "2px solid green");
+                    $("#emailcheck").html("<p class='text-success'>Valid</p>")
+                }
+                else {
+                    $("#email").css("border", "2px solid red");
+                    $("#emailcheck").html("<p class='text-danger'>Not Valid</p>")
+                }
+            });
+
+
+            $('#password').keyup(function () {
+                if (checkpassword() == true) {
+                    $("#password").css("border", "2px solid green");
+                    $("#passwordcheck").html("<p class='text-success'>Valid</p>")
+                }
+                else {
+                    $("#password").css("border", "2px solid red");
+                    $("#passwordcheck").html("<p class='text-danger'>Not Valid</p>")
+                }
+
+            })
+            $("#show_password").on("click", function () {
+                var password = $("#password");
+                //    alert(password);
+                if (password.attr('type') === 'password') {
+                    password.attr('type', 'text')
+
+                } else {
+
+                    password.attr('type', 'password');
+                }
+
+            });
+            $('#conPassword').keyup(function () {
+                if (confirmpassword() == true) {
+                    $("#conPassword").css("border", "2px solid green");
+                    $("#conpasswordcheck").html("<p class='text-success'>Valid</p>")
+                }
+                else {
+                    $("#conPassword").css("border", "2px solid red");
+                    $("#conpasswordcheck").html("<p class='text-danger'>Not Valid</p>")
+                }
+
+            })
+
+            $(document).on("click", "#submitbtn", function () {
+                // alert("sam");
+
+                if (contact_check() == true && user_check() == true && email_check() == true && checkpassword() == true && confirmpassword() == true) {
+                    // alert("your form is submitted sucessfully");
+                    window.location.replace("./index2.html");
+                    return true;
+                } else {
+                    // alert("Enter all the details properly");
+                    $("#usercheck").html("<span>**Please Enter your username</span>");
+
+                    $("#contactcheck").html("<span>**Enter Contact number</span>");
+                    $("#emailcheck").html("<span>**Enter email number</span>");
+                    $("#passwordcheck").html("<span>**Enter Password </span>");
+                    $("#usercheck, #contactcheck ,#emailcheck ,#passwordcheck").css("color", " red");
+                    return false;
+                }
+            });
+
+        });
+
+
+
+        function user_check() {
+            var userval = $("#username").val();
+            let regexp = /(?=[a-zA-Z0-9-]{5,25}$)^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$/;
+            // if(userval>3||userval<10){
+            if (regexp.test(userval)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function contact_check() {
+            var contactval = $("#contactNo").val();
+            let regexp = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+            if (regexp.test(contactval)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function email_check() {
+            var emailval = $("#email").val();
+            let regex = /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
+            if (regex.test(emailval)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function checkpassword() {
+            var passval = $("#password").val();
+            var regexp = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])([a-zA-Z0-9]{8})$/;
+            if (passval.length > 7) {
+                // if(regexp.test(passval)){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        function confirmpassword() {
+
+            var password = $("#password").val();
+            var confirmPassword = $("#conPassword").val();
+            if (password == confirmPassword) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }  
+    </script>
+
+</body>
+
+</html>
